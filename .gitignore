@@ -1,0 +1,5 @@
+# ignore cmake generated folder
+/build/
+
+# ignore game output folder
+/bin/
