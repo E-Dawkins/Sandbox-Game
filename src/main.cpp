@@ -1,18 +1,16 @@
-#include <raylib.h>
+#include "core/game.h"
 
 int main() {
-    InitWindow(800, 600, "Sandbox Game");
-    
-    SetWindowState(FLAG_WINDOW_RESIZABLE);
+    Core::Game game{};
 
-    while (!WindowShouldClose()) {
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-        DrawText("Sandbox Game!", 350, 280, 20, DARKGRAY);
-        EndDrawing();
+    game.Init();
+
+    while (game.IsRunning()) {
+        game.Update();
+        game.Draw();
     }
-    
-    CloseWindow();
+
+    game.Shutdown();
     
     return 0;
 }
