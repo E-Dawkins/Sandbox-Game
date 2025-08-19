@@ -11,9 +11,11 @@ namespace Core {
 		int size = 10;
 		Color color = WHITE;
 
+		bool isStatic = false;
+
 	private:
 		bool mIsFalling = true;
-		int moveX = 0, moveY = 0;
+		int mMoveX = 0, mMoveY = 0;
 
 	public:
 		void PreCalculateMove(const Game& _g);

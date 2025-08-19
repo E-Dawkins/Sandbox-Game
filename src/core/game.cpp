@@ -2,6 +2,8 @@
 
 #include <raylib.h>
 
+#include <format>
+
 void Core::Game::Init() {
 	InitWindow(800, 600, "Sandbox Game");
 	SetWindowState(FLAG_WINDOW_RESIZABLE);
@@ -10,6 +12,9 @@ void Core::Game::Init() {
 	mParticleSize = 10;
 	mRows = GetRenderHeight() / mParticleSize;
 	mCols = GetRenderWidth() / mParticleSize;
+
+	// This is temporary
+	SetWindowTitle(std::format("Sandbox Game | SpawnStatic:{}", mSpawnStatic).c_str());
 }
 
 void Core::Game::Update() {
@@ -63,7 +68,7 @@ void Core::Game::ProcessInput() {
 		const int mousePosX = static_cast<int>(mousePos.x) / mParticleSize;
 		const int mousePosY = static_cast<int>(mousePos.y) / mParticleSize;
 
-		SpawnParticlesInSquare(mousePosX - 3, mousePosX + 3, mousePosY - 3, mousePosY + 3, RED);
+		SpawnParticlesInRadius(mousePosX, mousePosY, 3, (mSpawnStatic ? GREEN : RED));
 	}
 
 	// Remove particles
@@ -73,7 +78,14 @@ void Core::Game::ProcessInput() {
 		const int mousePosX = static_cast<int>(mousePos.x) / mParticleSize;
 		const int mousePosY = static_cast<int>(mousePos.y) / mParticleSize;
 
-		RemoveParticlesInSquare(mousePosX - 3, mousePosX + 3, mousePosY - 3, mousePosY + 3);
+		RemoveParticlesInRadius(mousePosX, mousePosY, 3);
+	}
+
+	// Switch between static and falling particles
+	if (IsKeyPressed(KEY_S)) {
+		mSpawnStatic = !mSpawnStatic;
+
+		SetWindowTitle(std::format("Sandbox Game | SpawnStatic:{}", mSpawnStatic).c_str());
 	}
 }
 
@@ -87,6 +99,7 @@ void Core::Game::AddParticleToSystem(int _posX, int _posY, Color _col) {
 	p.posY = _posY;
 	p.size = mParticleSize;
 	p.color = _col;
+	p.isStatic = mSpawnStatic;
 
 	mParticles.emplace_back(std::make_shared<Core::Particle>(p));
 }
@@ -104,9 +117,11 @@ void Core::Game::RemoveParticleFromSystem(int _posX, int _posY) {
 	}
 }
 
-void Core::Game::SpawnParticlesInSquare(int _minX, int _maxX, int _minY, int _maxY, Color _col) {
-	for (int x = _minX; x <= _maxX; x++) {
-		for (int y = _minY; y <= _maxY; y++) {
+void Core::Game::SpawnParticlesInRadius(int _posX, int _posY, int _radius, Color _col) {
+	// Currently in a square from [_posX - _radius, _posY - _radius] to [_posX + _radius, _posY + _radius]
+	
+	for (int x = _posX - _radius; x <= _posX + _radius; x++) {
+		for (int y = _posY - _radius; y <= _posY + _radius; y++) {
 			if (IsInScreenBounds(x, y)) {
 				AddParticleToSystem(x, y, _col);
 			}
@@ -114,9 +129,11 @@ void Core::Game::SpawnParticlesInSquare(int _minX, int _maxX, int _minY, int _ma
 	}
 }
 
-void Core::Game::RemoveParticlesInSquare(int _minX, int _maxX, int _minY, int _maxY) {
-	for (int x = _minX; x <= _maxX; x++) {
-		for (int y = _minY; y <= _maxY; y++) {
+void Core::Game::RemoveParticlesInRadius(int _posX, int _posY, int _radius) {
+	// Currently in a square from [_posX - _radius, _posY - _radius] to [_posX + _radius, _posY + _radius]
+
+	for (int x = _posX - _radius; x <= _posX + _radius; x++) {
+		for (int y = _posY - _radius; y <= _posY + _radius; y++) {
 			if (IsInScreenBounds(x, y)) {
 				RemoveParticleFromSystem(x, y);
 			}

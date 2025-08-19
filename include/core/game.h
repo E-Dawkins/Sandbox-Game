@@ -28,8 +28,8 @@ namespace Core {
 		void AddParticleToSystem(int _posX, int _posY, Color _col);
 		void RemoveParticleFromSystem(int _posX, int _posY);
 
-		void SpawnParticlesInSquare(int _minX, int _maxX, int _minY, int _maxY, Color _col);
-		void RemoveParticlesInSquare(int _minX, int _maxX, int _minY, int _maxY);
+		void SpawnParticlesInRadius(int _posX, int _posY, int _radius, Color _col);
+		void RemoveParticlesInRadius(int _posX, int _posY, int _radius);
 
 	private:
 		std::vector<std::shared_ptr<Core::Particle>> mParticles = {};
@@ -37,5 +37,7 @@ namespace Core {
 
 		int mRows = 0;
 		int mCols = 0;
+
+		bool mSpawnStatic = false;
 	};
 }
