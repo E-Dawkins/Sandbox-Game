@@ -16,6 +16,10 @@ void Core::Game::Update() {
 	ProcessInput();
 
 	for (const auto& p : mParticles) {
+		p->PreCalculateMove(*this);
+	}
+
+	for (const auto& p : mParticles) {
 		p->TickPhysics(*this);
 	}
 }

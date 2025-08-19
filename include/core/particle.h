@@ -13,8 +13,10 @@ namespace Core {
 
 	private:
 		bool mIsFalling = true;
+		int moveX = 0, moveY = 0;
 
 	public:
+		void PreCalculateMove(const Game& _g);
 		void TickPhysics(const Game& _g);
 		void Draw();
 	};
