@@ -15,14 +15,14 @@ void Core::Particle::PreCalculateMove(const Game& _g) {
 			}
 		}
 		// Down-left
-		else if (auto& p2 = _g.GetParticleAtPosition(posX - 1, posY + 1); p2 == nullptr || p1->mIsFalling) {
+		else if (auto& p2 = _g.GetParticleAtPosition(posX - 1, posY + 1); p2 == nullptr || p2->mIsFalling) {
 			if (_g.IsInScreenBounds(posX - 1, posY + 1)) {
 				mMoveX = -1;
 				mMoveY = 1;
 			}
 		}
 		// Down-right
-		else if (auto& p3 = _g.GetParticleAtPosition(posX + 1, posY + 1); p3 == nullptr || p1->mIsFalling) {
+		else if (auto& p3 = _g.GetParticleAtPosition(posX + 1, posY + 1); p3 == nullptr || p3->mIsFalling) {
 			if (_g.IsInScreenBounds(posX + 1, posY + 1)) {
 				mMoveX = 1;
 				mMoveY = 1;
@@ -39,13 +39,11 @@ void Core::Particle::TickPhysics(const Game& _g) {
 		return;
 	}
 
-	// Double check the next move is still possible, otherwise re-calculate it
-	if (auto& p = _g.GetParticleAtPosition(posX + mMoveX, posY + mMoveY)) {
-		PreCalculateMove(_g);
+	// Double check the next move is still possible
+	if (auto& p = _g.GetParticleAtPosition(posX + mMoveX, posY + mMoveY); p == nullptr) {
+		posX += mMoveX;
+		posY += mMoveY;
 	}
-
-	posX += mMoveX;
-	posY += mMoveY;
 }
 
 void Core::Particle::Draw() {

@@ -118,24 +118,38 @@ void Core::Game::RemoveParticleFromSystem(int _posX, int _posY) {
 }
 
 void Core::Game::SpawnParticlesInRadius(int _posX, int _posY, int _radius, Color _col) {
-	// Currently in a square from [_posX - _radius, _posY - _radius] to [_posX + _radius, _posY + _radius]
-	
-	for (int x = _posX - _radius; x <= _posX + _radius; x++) {
-		for (int y = _posY - _radius; y <= _posY + _radius; y++) {
-			if (IsInScreenBounds(x, y)) {
-				AddParticleToSystem(x, y, _col);
+	const int radiusSquared = _radius * _radius;
+	for (int y = -_radius; y <= _radius; y++) {
+		for (int x = -_radius; x <= _radius; x++) {
+			// Outside circle radius
+			if ((x * x) + (y * y) > radiusSquared) {
+				continue;
+			}
+
+			const int offsetX = _posX + x;
+			const int offsetY = _posY + y;
+
+			if (IsInScreenBounds(offsetX, offsetY)) {
+				AddParticleToSystem(offsetX, offsetY, _col);
 			}
 		}
 	}
 }
 
 void Core::Game::RemoveParticlesInRadius(int _posX, int _posY, int _radius) {
-	// Currently in a square from [_posX - _radius, _posY - _radius] to [_posX + _radius, _posY + _radius]
+	const int radiusSquared = _radius * _radius;
+	for (int y = -_radius; y <= _radius; y++) {
+		for (int x = -_radius; x <= _radius; x++) {
+			// Outside circle radius
+			if ((x * x) + (y * y) > radiusSquared) {
+				continue;
+			}
 
-	for (int x = _posX - _radius; x <= _posX + _radius; x++) {
-		for (int y = _posY - _radius; y <= _posY + _radius; y++) {
-			if (IsInScreenBounds(x, y)) {
-				RemoveParticleFromSystem(x, y);
+			const int offsetX = _posX + x;
+			const int offsetY = _posY + y;
+
+			if (IsInScreenBounds(offsetX, offsetY)) {
+				RemoveParticleFromSystem(offsetX, offsetY);
 			}
 		}
 	}
