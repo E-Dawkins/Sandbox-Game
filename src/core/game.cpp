@@ -8,7 +8,6 @@
 
 void Core::Game::Init() {
 	InitWindow(800, 600, "Sandbox Game");
-	SetWindowState(FLAG_WINDOW_RESIZABLE);
 	SetTargetFPS(24); // this has no effect on the simulation, just makes it look nicer
 
 	mParticleSize = 10;
