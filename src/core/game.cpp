@@ -13,9 +13,6 @@ void Core::Game::Init() {
 	mParticleSize = 10;
 	mRows = GetRenderHeight() / mParticleSize;
 	mCols = GetRenderWidth() / mParticleSize;
-
-	// This is temporary
-	SetWindowTitle(std::format("Sandbox Game | SpawnStatic:{}", mSpawnStatic).c_str());
 }
 
 void Core::Game::Update() {
@@ -69,7 +66,7 @@ void Core::Game::ProcessInput() {
 		const int mousePosX = static_cast<int>(mousePos.x) / mParticleSize;
 		const int mousePosY = static_cast<int>(mousePos.y) / mParticleSize;
 
-		SpawnParticlesInRadius(mousePosX, mousePosY, 3, (mSpawnStatic ? "stone" : "sand"));
+		SpawnParticlesInRadius(mousePosX, mousePosY, 3, mTypeToSpawn);
 	}
 
 	// Remove particles
@@ -82,11 +79,11 @@ void Core::Game::ProcessInput() {
 		RemoveParticlesInRadius(mousePosX, mousePosY, 3);
 	}
 
-	// Switch between static and falling particles
-	if (IsKeyPressed(KEY_S)) {
-		mSpawnStatic = !mSpawnStatic;
-
-		SetWindowTitle(std::format("Sandbox Game | SpawnStatic:{}", mSpawnStatic).c_str());
+	// Temporary way to select particle type
+	switch (GetKeyPressed()) {
+		case KEY_ONE: mTypeToSpawn = "sand"; break;
+		case KEY_TWO: mTypeToSpawn = "stone"; break;
+		case KEY_THREE: mTypeToSpawn = "water"; break;
 	}
 }
 

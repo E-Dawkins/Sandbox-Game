@@ -21,8 +21,17 @@ namespace Core {
 		}
 	};
 
+	class Particle_Water : public Particle {
+	public:
+		Particle_Water() {
+			color = SKYBLUE;
+			isLiquid = true;
+		}
+	};
+
 	static std::map<std::string, Particle> gParticleTypes = {
 		{"sand", Particle_Sand()},
-		{"stone", Particle_Stone()}
+		{"stone", Particle_Stone()},
+		{"water", Particle_Water()}
 	};
 }

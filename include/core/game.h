@@ -39,6 +39,6 @@ namespace Core {
 		int mRows = 0;
 		int mCols = 0;
 
-		bool mSpawnStatic = false;
+		std::string mTypeToSpawn = "sand";
 	};
 }

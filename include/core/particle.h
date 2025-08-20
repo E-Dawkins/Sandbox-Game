@@ -12,10 +12,12 @@ namespace Core {
 		Color color = WHITE;
 
 		bool isStatic = false;
+		bool isLiquid = false;
 
 	private:
 		bool mIsFalling = true;
 		int mMoveX = 0, mMoveY = 0;
+		int mLiquidMoveX = 0, mLiquidMoveY = 0;
 
 	public:
 		void PreCalculateMove(const Game& _g);
