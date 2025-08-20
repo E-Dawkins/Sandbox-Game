@@ -84,6 +84,7 @@ void Core::Game::ProcessInput() {
 		case KEY_ONE: mTypeToSpawn = "sand"; break;
 		case KEY_TWO: mTypeToSpawn = "stone"; break;
 		case KEY_THREE: mTypeToSpawn = "water"; break;
+		case KEY_FOUR: mTypeToSpawn = "oil"; break;
 	}
 }
 

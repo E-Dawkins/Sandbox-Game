@@ -11,8 +11,11 @@ namespace Core {
 		int size = 10;
 		Color color = WHITE;
 
+		// Attributes
+
 		bool isStatic = false;
 		bool isLiquid = false;
+		int liquidDensity = 0;
 
 	private:
 		bool mIsFalling = true;
