@@ -3,6 +3,7 @@
 #include "core/particle.h"
 
 #include <memory>
+#include <string>
 #include <vector>
 
 namespace Core {
@@ -25,10 +26,10 @@ namespace Core {
 
 	private:
 		void ProcessInput();
-		void AddParticleToSystem(int _posX, int _posY, Color _col);
+		void AddParticleToSystem(int _posX, int _posY, std::string _type);
 		void RemoveParticleFromSystem(int _posX, int _posY);
 
-		void SpawnParticlesInRadius(int _posX, int _posY, int _radius, Color _col);
+		void SpawnParticlesInRadius(int _posX, int _posY, int _radius, std::string _type);
 		void RemoveParticlesInRadius(int _posX, int _posY, int _radius);
 
 	private:

@@ -1,8 +1,10 @@
 #include "core/game.h"
 
+#include <format>
 #include <raylib.h>
 
-#include <format>
+#include "core/particle_defines.h"
+#include "core/raylib_helpers.h"
 
 void Core::Game::Init() {
 	InitWindow(800, 600, "Sandbox Game");
@@ -68,7 +70,7 @@ void Core::Game::ProcessInput() {
 		const int mousePosX = static_cast<int>(mousePos.x) / mParticleSize;
 		const int mousePosY = static_cast<int>(mousePos.y) / mParticleSize;
 
-		SpawnParticlesInRadius(mousePosX, mousePosY, 3, (mSpawnStatic ? GREEN : RED));
+		SpawnParticlesInRadius(mousePosX, mousePosY, 3, (mSpawnStatic ? "stone" : "sand"));
 	}
 
 	// Remove particles
@@ -89,17 +91,16 @@ void Core::Game::ProcessInput() {
 	}
 }
 
-void Core::Game::AddParticleToSystem(int _posX, int _posY, Color _col) {
+void Core::Game::AddParticleToSystem(int _posX, int _posY, std::string _type) {
 	if (GetParticleAtPosition(_posX, _posY) != nullptr) {
 		return;
 	}
 	
-	Core::Particle p;
+	Core::Particle p = Core::Particle(Core::gParticleTypes[_type]);
 	p.posX = _posX;
 	p.posY = _posY;
 	p.size = mParticleSize;
-	p.color = _col;
-	p.isStatic = mSpawnStatic;
+	p.color = Core::Raylib_Helpers::RandomOffsetColor(p.color, 20);
 
 	mParticles.emplace_back(std::make_shared<Core::Particle>(p));
 }
@@ -117,7 +118,7 @@ void Core::Game::RemoveParticleFromSystem(int _posX, int _posY) {
 	}
 }
 
-void Core::Game::SpawnParticlesInRadius(int _posX, int _posY, int _radius, Color _col) {
+void Core::Game::SpawnParticlesInRadius(int _posX, int _posY, int _radius, std::string _type) {
 	const int radiusSquared = _radius * _radius;
 	for (int y = -_radius; y <= _radius; y++) {
 		for (int x = -_radius; x <= _radius; x++) {
@@ -130,7 +131,7 @@ void Core::Game::SpawnParticlesInRadius(int _posX, int _posY, int _radius, Color
 			const int offsetY = _posY + y;
 
 			if (IsInScreenBounds(offsetX, offsetY)) {
-				AddParticleToSystem(offsetX, offsetY, _col);
+				AddParticleToSystem(offsetX, offsetY, _type);
 			}
 		}
 	}
