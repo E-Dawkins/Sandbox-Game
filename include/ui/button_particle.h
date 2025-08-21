@@ -13,6 +13,9 @@ namespace Ui {
 		Rectangle mBgRect;
 		Rectangle mItemRect;
 
+		std::string mParticleType;
+		Vector2 mTextPos;
+
 	public:
 		Button_Particle(const Button& x);
 
