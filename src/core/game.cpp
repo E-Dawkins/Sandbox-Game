@@ -5,6 +5,7 @@
 
 #include "core/particle_defines.h"
 #include "core/raylib_helpers.h"
+#include "ui/button.h"
 
 void Core::Game::Init() {
 	InitWindow(800, 600, "Sandbox Game");
@@ -13,9 +14,22 @@ void Core::Game::Init() {
 	mParticleSize = 10;
 	mRows = GetRenderHeight() / mParticleSize;
 	mCols = GetRenderWidth() / mParticleSize;
+
+	// Define / setup all ui buttons
+	mButtons.emplace_back(std::make_unique<Ui::Button>(Ui::Button(100, 100, []() { SetWindowTitle("BUTTON CLICKED!"); })));
 }
 
 void Core::Game::Update() {
+	const Vector2 mousePos = GetMousePosition();
+
+	mMouseInputConsumed = false;
+	for (const auto& b : mButtons) {
+		// Has any button consumed mouse input?
+		if (b->Update(mousePos)) {
+			mMouseInputConsumed = true;
+		}
+	}
+
 	ProcessInput();
 
 	for (const auto& p : mParticles) {
@@ -32,6 +46,10 @@ void Core::Game::Draw() {
 		ClearBackground(BLACK);
 		for (const auto& p : mParticles) {
 			p->Draw();
+		}
+
+		for (const auto& b : mButtons) {
+			b->Draw();
 		}
 	EndDrawing();
 }
@@ -60,7 +78,7 @@ bool Core::Game::IsInScreenBounds(int _x, int _y) const {
 
 void Core::Game::ProcessInput() {
 	// Spawn particles
-	if (IsMouseButtonPressed(0)) {
+	if (!mMouseInputConsumed && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
 		Vector2 mousePos = GetMousePosition();
 
 		const int mousePosX = static_cast<int>(mousePos.x) / mParticleSize;
@@ -70,7 +88,7 @@ void Core::Game::ProcessInput() {
 	}
 
 	// Remove particles
-	if (IsMouseButtonPressed(1)) {
+	if (!mMouseInputConsumed && IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
 		Vector2 mousePos = GetMousePosition();
 
 		const int mousePosX = static_cast<int>(mousePos.x) / mParticleSize;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/particle.h"
+#include "ui/button.h"
 
 #include <memory>
 #include <string>
@@ -35,6 +36,9 @@ namespace Core {
 	private:
 		std::vector<std::shared_ptr<Core::Particle>> mParticles = {};
 		int mParticleSize = 10;
+
+		std::vector<std::unique_ptr<Ui::Button>> mButtons = {};
+		bool mMouseInputConsumed = false;
 
 		int mRows = 0;
 		int mCols = 0;
