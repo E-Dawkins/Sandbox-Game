@@ -26,6 +26,8 @@ namespace Core {
 		bool IsInScreenBounds(int _x, int _y) const;
 
 	private:
+		void SetupButtons();
+
 		void ProcessInput();
 		void AddParticleToSystem(int _posX, int _posY, std::string _type);
 		void RemoveParticleFromSystem(int _posX, int _posY);

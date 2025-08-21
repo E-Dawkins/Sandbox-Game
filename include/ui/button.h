@@ -10,6 +10,9 @@ namespace Ui {
 		int sizeX, sizeY;
 
 		bool isActive = true;
+		
+		Color baseColor = LIGHTGRAY;
+		Color hoveredColor = RAYWHITE;
 
 	protected:
 		bool mIsHovered = false;
@@ -26,5 +29,9 @@ namespace Ui {
 		// @returns Whether the button has 'consumed' a mouse click
 		virtual bool Update(const Vector2 _mousePos);
 		virtual void Draw();
+
+		// Helpers
+
+		const ButtonCallback& GetCallback() const;
 	};
 }

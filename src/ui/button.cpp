@@ -39,5 +39,9 @@ bool Ui::Button::Update(const Vector2 _mousePos) {
 }
 
 void Ui::Button::Draw() {
-	DrawRectangleRounded(mAreaRect, 0.5f, 4, mIsHovered ? GREEN : RED);
+	DrawRectangleRounded(mAreaRect, 0.5f, 4, mIsHovered ? hoveredColor : baseColor);
+}
+
+const Ui::Button::ButtonCallback& Ui::Button::GetCallback() const {
+	return mCallback;
 }

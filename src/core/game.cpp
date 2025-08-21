@@ -5,7 +5,7 @@
 
 #include "core/particle_defines.h"
 #include "core/raylib_helpers.h"
-#include "ui/button.h"
+#include "ui/button_particle.h"
 
 void Core::Game::Init() {
 	InitWindow(800, 600, "Sandbox Game");
@@ -15,8 +15,7 @@ void Core::Game::Init() {
 	mRows = GetRenderHeight() / mParticleSize;
 	mCols = GetRenderWidth() / mParticleSize;
 
-	// Define / setup all ui buttons
-	mButtons.emplace_back(std::make_unique<Ui::Button>(Ui::Button(100, 100, []() { SetWindowTitle("BUTTON CLICKED!"); })));
+	SetupButtons();
 }
 
 void Core::Game::Update() {
@@ -76,6 +75,27 @@ bool Core::Game::IsInScreenBounds(int _x, int _y) const {
 	return _x >= 0 && _x < mCols && _y >= 0 && _y < mRows;
 }
 
+void Core::Game::SetupButtons() {
+	// Particle selection buttons
+	const int particleButtonSize = 50;
+	const int particleButtonSpacing = 20;
+
+	const int particleButtonCount = static_cast<int>(Core::gParticleTypes.size());
+	const int particleButtonTotalWidth = (particleButtonSize * particleButtonCount) + ((particleButtonCount + 1) * particleButtonSpacing);
+	const int particleButtonStartX = (GetRenderWidth() / 2) - (particleButtonTotalWidth / 2);
+
+	int count = 0;
+	for (const auto& pair : Core::gParticleTypes) {
+		const int buttonX = particleButtonStartX + ((particleButtonSize + particleButtonSpacing) * count);
+
+		Ui::Button_Particle ParticleButton = Ui::Button(buttonX, 20, 50, 50, [&]() { mTypeToSpawn = pair.first; });
+		ParticleButton.SetParticleType(pair.first);
+		mButtons.emplace_back(std::make_unique<Ui::Button_Particle>(ParticleButton));
+
+		count++;
+	}
+}
+
 void Core::Game::ProcessInput() {
 	// Spawn particles
 	if (!mMouseInputConsumed && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
@@ -95,14 +115,6 @@ void Core::Game::ProcessInput() {
 		const int mousePosY = static_cast<int>(mousePos.y) / mParticleSize;
 
 		RemoveParticlesInRadius(mousePosX, mousePosY, 3);
-	}
-
-	// Temporary way to select particle type
-	switch (GetKeyPressed()) {
-		case KEY_ONE: mTypeToSpawn = "sand"; break;
-		case KEY_TWO: mTypeToSpawn = "stone"; break;
-		case KEY_THREE: mTypeToSpawn = "water"; break;
-		case KEY_FOUR: mTypeToSpawn = "oil"; break;
 	}
 }
 
