@@ -6,6 +6,13 @@
 #include <string>
 
 namespace Core {
+	enum class LiquidDensities : int {
+		OIL,
+		WATER,
+
+		COUNT
+	};
+
 	class Particle_Sand : public Particle {
 	public:
 		Particle_Sand() {
@@ -26,7 +33,7 @@ namespace Core {
 		Particle_Water() {
 			color = SKYBLUE;
 			isLiquid = true;
-			liquidDensity = 10;
+			liquidDensity = static_cast<int>(LiquidDensities::WATER);
 		}
 	};
 
@@ -35,7 +42,7 @@ namespace Core {
 		Particle_Oil() {
 			color = Color{ 50, 50, 50, 255 }; // Darker gray
 			isLiquid = true;
-			liquidDensity = 5;
+			liquidDensity = static_cast<int>(LiquidDensities::OIL);
 		}
 	};
 
