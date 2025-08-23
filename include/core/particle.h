@@ -17,14 +17,11 @@ namespace Core {
 		bool isLiquid = false;
 		int liquidDensity = 0;
 
-	private:
-		bool mIsFalling = true;
-		int mMoveX = 0, mMoveY = 0;
-		int mLiquidMoveX = 0, mLiquidMoveY = 0;
-
 	public:
-		void PreCalculateMove(const Game& _g);
 		void TickPhysics(const Game& _g);
 		void Draw();
+		
+	private:
+		bool TryMoveTo(const Game& _g, int _moveX, int _moveY);
 	};
 }
