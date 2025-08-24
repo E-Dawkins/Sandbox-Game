@@ -23,5 +23,7 @@ namespace Core {
 		
 	private:
 		bool TryMoveTo(const Game& _g, int _moveX, int _moveY);
+		bool TryMoveToLower(const Game& _g, int _checkRange, bool _checkLeft);
+		bool IsMoveToOccupied(const Game& _g, int _moveX, int _moveY);
 	};
 }
