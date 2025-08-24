@@ -13,9 +13,10 @@ namespace Core {
 
 		// Attributes
 
-		bool isStatic = false;
-		bool isLiquid = false;
-		int liquidDensity = 0;
+		bool isStatic = false;		// should this particle be immovable?
+		bool isLiquid = false;		// is this particle a liquid?
+		int liquidDensity = 0;		// determines order that liquids stack on each other
+		int liquidRange = 0;		// how far does the liquid check for lower elevation?
 
 	public:
 		void TickPhysics(const Game& _g);

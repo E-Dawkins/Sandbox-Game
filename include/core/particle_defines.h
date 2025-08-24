@@ -34,6 +34,7 @@ namespace Core {
 			color = SKYBLUE;
 			isLiquid = true;
 			liquidDensity = static_cast<int>(LiquidDensities::WATER);
+			liquidRange = 8;
 		}
 	};
 
@@ -43,6 +44,7 @@ namespace Core {
 			color = Color{ 50, 50, 50, 255 }; // Darker gray
 			isLiquid = true;
 			liquidDensity = static_cast<int>(LiquidDensities::OIL);
+			liquidRange = 4;
 		}
 	};
 

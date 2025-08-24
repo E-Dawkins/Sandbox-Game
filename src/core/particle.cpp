@@ -23,11 +23,11 @@ void Core::Particle::TickPhysics(const Game& _g) {
 
 	if (isLiquid) {
 		// Liquids should try to move towards the lowest point possible
-		if (TryMoveToLower(_g, 8, true)) {
+		if (TryMoveToLower(_g, liquidRange, true)) {
 			return;
 		}
 
-		if (TryMoveToLower(_g, 8, false)) {
+		if (TryMoveToLower(_g, liquidRange, false)) {
 			return;
 		}
 	}
