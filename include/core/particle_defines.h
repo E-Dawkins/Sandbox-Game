@@ -13,6 +13,13 @@ namespace Core {
 		COUNT
 	};
 
+	enum class GasDensities : int {
+		STEAM,
+		SMOKE,
+
+		COUNT
+	};
+
 	class Particle_Sand : public Particle {
 	public:
 		Particle_Sand() {
@@ -48,10 +55,32 @@ namespace Core {
 		}
 	};
 
+	class Particle_Steam : public Particle {
+	public:
+		Particle_Steam() {
+			color = RAYWHITE;
+			isGas = true;
+			gasRange = 10;
+			gasDensity = static_cast<int>(GasDensities::STEAM);
+		}
+	};
+
+	class Particle_Smoke : public Particle {
+	public:
+		Particle_Smoke() {
+			color = DARKGRAY;
+			isGas = true;
+			gasRange = 6;
+			gasDensity = static_cast<int>(GasDensities::SMOKE);
+		}
+	};
+
 	static std::map<std::string, Particle> gParticleTypes = {
 		{"sand", Particle_Sand()},
 		{"stone", Particle_Stone()},
 		{"water", Particle_Water()},
 		{"oil", Particle_Oil()},
+		{"steam", Particle_Steam()},
+		{"smoke", Particle_Smoke()},
 	};
 }

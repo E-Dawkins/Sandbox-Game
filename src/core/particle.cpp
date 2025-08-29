@@ -8,26 +8,32 @@ void Core::Particle::TickPhysics(const Game& _g) {
 		return;
 	}
 
-	// Perform relevant move
-	if (TryMoveTo(_g, 0, 1)) {
+	// Perform relevant short-range move
+	const int verticalOffset = (isGas ? -1 : 1);
+
+	if (TryMoveTo(_g, 0, verticalOffset)) {
 		return;
 	}
 
-	if (TryMoveTo(_g, -1, 1)) {
+	if (TryMoveTo(_g, -1, verticalOffset)) {
 		return;
 	}
 
-	if (TryMoveTo(_g, 1, 1)) {
+	if (TryMoveTo(_g, 1, verticalOffset)) {
 		return;
 	}
 
-	if (isLiquid) {
-		// Liquids should try to move towards the lowest point possible
-		if (TryMoveToLower(_g, liquidRange, true)) {
+	if (isLiquid || isGas) {
+		// Liquids and gases should check the furthest point that they can move towards
+		// i.e. liquids check the lowest point, gases check the highest point
+		const bool checkDown = isLiquid;
+		const int range = (isLiquid ? liquidRange : gasRange);
+
+		if (TryMoveToRanged(_g, range, true, checkDown)) {
 			return;
 		}
 
-		if (TryMoveToLower(_g, liquidRange, false)) {
+		if (TryMoveToRanged(_g, range, false, checkDown)) {
 			return;
 		}
 	}
@@ -51,9 +57,11 @@ bool Core::Particle::TryMoveTo(const Game& _g, int _moveX, int _moveY) {
 	if (p != nullptr) {
 		bool solidIntoLiquid = (!isLiquid && p->isLiquid);
 		bool liquidIntoLiquid = (isLiquid && p->isLiquid && liquidDensity > p->liquidDensity);
+		bool solidIntoGas = (!isGas && p->isGas);
+		bool gasIntoGas = (isGas && p->isGas && gasDensity < p->gasDensity);
 
 		// If any of the move rules are met, swap particle positions
-		if (solidIntoLiquid || liquidIntoLiquid) {
+		if (solidIntoLiquid || liquidIntoLiquid || solidIntoGas || gasIntoGas) {
 			p->posX = posX;
 			p->posY = posY;
 		}
@@ -70,8 +78,9 @@ bool Core::Particle::TryMoveTo(const Game& _g, int _moveX, int _moveY) {
 	return true;
 }
 
-bool Core::Particle::TryMoveToLower(const Game& _g, int _checkRange, bool _checkLeft) {
+bool Core::Particle::TryMoveToRanged(const Game& _g, int _checkRange, bool _checkLeft, bool _checkDown) {
 	const int sign = (_checkLeft ? -1 : 1);
+	const int vertical = (_checkDown ? 1 : -1);
 
 	for (int i = 1; i < _checkRange; i++) {
 		// Check if direct sideways is possible
@@ -79,8 +88,8 @@ bool Core::Particle::TryMoveToLower(const Game& _g, int _checkRange, bool _check
 			break;
 		}
 
-		// If it is, check for lower elevation
-		if (!IsMoveToOccupied(_g, i * sign, 1)) {
+		// If it is, check vertically
+		if (!IsMoveToOccupied(_g, i * sign, vertical)) {
 			posX += sign;
 			break;
 		}
