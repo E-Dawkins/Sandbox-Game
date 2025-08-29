@@ -9,7 +9,7 @@ void Core::Particle::TickPhysics(const Game& _g) {
 	}
 
 	// Perform relevant short-range move
-	const int verticalOffset = (isGas ? -1 : 1);
+	const int verticalOffset = (state == ParticleState::GAS ? -1 : 1);
 
 	if (TryMoveTo(_g, 0, verticalOffset)) {
 		return;
@@ -23,11 +23,10 @@ void Core::Particle::TickPhysics(const Game& _g) {
 		return;
 	}
 
-	if (isLiquid || isGas) {
+	if (state == ParticleState::LIQUID || state == ParticleState::GAS) {
 		// Liquids and gases should check the furthest point that they can move towards
 		// i.e. liquids check the lowest point, gases check the highest point
-		const bool checkDown = isLiquid;
-		const int range = (isLiquid ? liquidRange : gasRange);
+		const bool checkDown = (state == ParticleState::LIQUID);
 
 		if (TryMoveToRanged(_g, range, true, checkDown)) {
 			return;
@@ -55,10 +54,10 @@ bool Core::Particle::TryMoveTo(const Game& _g, int _moveX, int _moveY) {
 	// Is the move to location occupied?
 	const auto& p = _g.GetParticleAtPosition(offsetPosX, offsetPosY);
 	if (p != nullptr) {
-		bool solidIntoLiquid = (!isLiquid && p->isLiquid);
-		bool liquidIntoLiquid = (isLiquid && p->isLiquid && liquidDensity > p->liquidDensity);
-		bool solidIntoGas = (!isGas && p->isGas);
-		bool gasIntoGas = (isGas && p->isGas && gasDensity < p->gasDensity);
+		bool solidIntoLiquid = (state == ParticleState::SOLID && p->state == ParticleState::LIQUID);
+		bool liquidIntoLiquid = (state == ParticleState::LIQUID && p->state == ParticleState::LIQUID && density > p->density);
+		bool solidIntoGas = (state == ParticleState::SOLID && p->state == ParticleState::GAS);
+		bool gasIntoGas = (state == ParticleState::GAS && p->state == ParticleState::GAS && density < p->density);
 
 		// If any of the move rules are met, swap particle positions
 		if (solidIntoLiquid || liquidIntoLiquid || solidIntoGas || gasIntoGas) {

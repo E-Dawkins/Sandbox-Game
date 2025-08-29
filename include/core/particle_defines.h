@@ -39,9 +39,9 @@ namespace Core {
 	public:
 		Particle_Water() {
 			color = SKYBLUE;
-			isLiquid = true;
-			liquidDensity = static_cast<int>(LiquidDensities::WATER);
-			liquidRange = 8;
+			state = ParticleState::LIQUID;
+			density = static_cast<int>(LiquidDensities::WATER);
+			range = 8;
 		}
 	};
 
@@ -49,9 +49,9 @@ namespace Core {
 	public:
 		Particle_Oil() {
 			color = Color{ 50, 50, 50, 255 }; // Darker gray
-			isLiquid = true;
-			liquidDensity = static_cast<int>(LiquidDensities::OIL);
-			liquidRange = 4;
+			state = ParticleState::LIQUID;
+			density = static_cast<int>(LiquidDensities::OIL);
+			range = 4;
 		}
 	};
 
@@ -59,9 +59,9 @@ namespace Core {
 	public:
 		Particle_Steam() {
 			color = RAYWHITE;
-			isGas = true;
-			gasRange = 10;
-			gasDensity = static_cast<int>(GasDensities::STEAM);
+			state = ParticleState::GAS;
+			density = static_cast<int>(GasDensities::STEAM);
+			range = 10;
 		}
 	};
 
@@ -69,9 +69,9 @@ namespace Core {
 	public:
 		Particle_Smoke() {
 			color = DARKGRAY;
-			isGas = true;
-			gasRange = 6;
-			gasDensity = static_cast<int>(GasDensities::SMOKE);
+			state = ParticleState::GAS;
+			density = static_cast<int>(GasDensities::SMOKE);
+			range = 6;
 		}
 	};
 

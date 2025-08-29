@@ -5,6 +5,14 @@
 namespace Core {
 	class Game;
 
+	enum class ParticleState {
+		SOLID,
+		LIQUID,
+		GAS,
+
+		COUNT
+	};
+
 	class Particle {
 	public:
 		int posX = 0, posY = 0;
@@ -13,15 +21,12 @@ namespace Core {
 
 		// Attributes
 
-		bool isStatic = false;		// should this particle be immovable?
+		bool isStatic = false;							// should this particle be immovable?
 
-		bool isLiquid = false;		// is this particle a liquid?
-		int liquidDensity = 0;		// determines order that liquids stack on each other
-		int liquidRange = 0;		// how far does the liquid check for lower elevation?
+		ParticleState state = ParticleState::SOLID;		// what state is this particle in?
 
-		bool isGas = false;			// is this particle a gas?
-		int gasDensity = 0;			// determines order that gases stack on each other
-		int gasRange = 0;			// how far does the gas check for higher elevation?
+		int density = 0;								// determines order that non-solids stack on each other
+		int range = 0;									// how far does a non-solid check for elevation change?
 
 	public:
 		void TickPhysics(const Game& _g);
