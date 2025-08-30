@@ -36,6 +36,8 @@ namespace Core {
 		void SpawnParticlesInRadius(int _posX, int _posY, int _radius, std::string _type);
 		void RemoveParticlesInRadius(int _posX, int _posY, int _radius);
 
+		void DrawSpawnRadius();
+
 	private:
 		// This is mutable to allow 'AddParticleToSystem' and 'RemoveParticleFromSystem' to work on const Game objects
 		// i.e. for particles to call these functions on interaction events
@@ -44,10 +46,12 @@ namespace Core {
 
 		std::vector<std::unique_ptr<Ui::Button>> mButtons = {};
 		bool mMouseInputConsumed = false;
+		bool mHoveringAnyButton = false;
 
 		int mRows = 0;
 		int mCols = 0;
 
 		std::string mTypeToSpawn = "sand";
+		int mSpawnRadius = 3;
 	};
 }

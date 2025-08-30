@@ -45,3 +45,7 @@ void Ui::Button::Draw() {
 const Ui::Button::ButtonCallback& Ui::Button::GetCallback() const {
 	return mCallback;
 }
+
+bool Ui::Button::IsHovered() const {
+	return mIsHovered;
+}

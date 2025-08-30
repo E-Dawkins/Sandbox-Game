@@ -22,10 +22,17 @@ void Core::Game::Update() {
 	const Vector2 mousePos = GetMousePosition();
 
 	mMouseInputConsumed = false;
+	mHoveringAnyButton = false;
+
 	for (const auto& b : mButtons) {
 		// Has any button consumed mouse input?
 		if (b->Update(mousePos)) {
 			mMouseInputConsumed = true;
+		}
+
+		// Are we hovering any button?
+		if (b->IsHovered()) {
+			mHoveringAnyButton = true;
 		}
 	}
 
@@ -39,6 +46,10 @@ void Core::Game::Update() {
 void Core::Game::Draw() {
 	BeginDrawing();
 		ClearBackground(BLACK);
+		if (!mHoveringAnyButton) {
+			DrawSpawnRadius();
+		}
+
 		for (const auto& p : mParticles) {
 			p->Draw();
 		}
@@ -102,7 +113,7 @@ void Core::Game::ProcessInput() {
 		const int mousePosX = static_cast<int>(mousePos.x) / mParticleSize;
 		const int mousePosY = static_cast<int>(mousePos.y) / mParticleSize;
 
-		SpawnParticlesInRadius(mousePosX, mousePosY, 3, mTypeToSpawn);
+		SpawnParticlesInRadius(mousePosX, mousePosY, mSpawnRadius, mTypeToSpawn);
 	}
 
 	// Remove particles
@@ -112,7 +123,7 @@ void Core::Game::ProcessInput() {
 		const int mousePosX = static_cast<int>(mousePos.x) / mParticleSize;
 		const int mousePosY = static_cast<int>(mousePos.y) / mParticleSize;
 
-		RemoveParticlesInRadius(mousePosX, mousePosY, 3);
+		RemoveParticlesInRadius(mousePosX, mousePosY, mSpawnRadius);
 	}
 }
 
@@ -176,6 +187,29 @@ void Core::Game::RemoveParticlesInRadius(int _posX, int _posY, int _radius) {
 
 			if (IsInScreenBounds(offsetX, offsetY)) {
 				RemoveParticleFromSystem(offsetX, offsetY);
+			}
+		}
+	}
+}
+
+void Core::Game::DrawSpawnRadius() {
+	const Vector2 mousePos = GetMousePosition();
+	const int mousePosX = static_cast<int>(mousePos.x) / mParticleSize;
+	const int mousePosY = static_cast<int>(mousePos.y) / mParticleSize;
+
+	const int radiusSquared = mSpawnRadius * mSpawnRadius;
+	for (int y = -mSpawnRadius; y <= mSpawnRadius; y++) {
+		for (int x = -mSpawnRadius; x <= mSpawnRadius; x++) {
+			// Outside circle radius
+			if ((x * x) + (y * y) > radiusSquared) {
+				continue;
+			}
+
+			const int offsetX = mousePosX + x;
+			const int offsetY = mousePosY + y;
+
+			if (IsInScreenBounds(offsetX, offsetY)) {
+				DrawRectangleLines(offsetX * mParticleSize, offsetY * mParticleSize, mParticleSize, mParticleSize, MAGENTA);
 			}
 		}
 	}

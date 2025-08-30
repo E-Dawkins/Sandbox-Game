@@ -33,5 +33,6 @@ namespace Ui {
 		// Helpers
 
 		const ButtonCallback& GetCallback() const;
+		bool IsHovered() const;
 	};
 }
