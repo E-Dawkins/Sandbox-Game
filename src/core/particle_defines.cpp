@@ -11,4 +11,10 @@ void Core::Particle_Water::HandleInteraction(const Game& _g, const std::unique_p
 		_g.RemoveParticleFromSystem(storedPosX, storedPosY);
 		_g.AddParticleToSystem(storedPosX, storedPosY, "steam");
 	}
+	else if (dynamic_cast<Particle_Cryo*>(_other.get())) {
+		// Replace ourself with ice particle
+		const int storedPosX = posX, storedPosY = posY;
+		_g.RemoveParticleFromSystem(storedPosX, storedPosY);
+		_g.AddParticleToSystem(storedPosX, storedPosY, "ice");
+	}
 }

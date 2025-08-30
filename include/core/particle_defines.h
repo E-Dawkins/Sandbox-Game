@@ -19,6 +19,7 @@ namespace Core {
 		STEAM,
 		SMOKE,
 		FIRE,
+		CRYO,
 
 		COUNT
 	};
@@ -41,7 +42,7 @@ namespace Core {
 	class Particle_Water : public Particle {
 	public:
 		Particle_Water() {
-			color = SKYBLUE;
+			color = Color{ 50, 131, 241, 255 };
 			state = ParticleState::LIQUID;
 			density = static_cast<int>(LiquidDensities::WATER);
 			range = 8;
@@ -91,6 +92,24 @@ namespace Core {
 		}
 	};
 
+	class Particle_Cryo : public Particle {
+	public:
+		Particle_Cryo() {
+			color = SKYBLUE;
+			state = ParticleState::GAS;
+			density = static_cast<int>(GasDensities::CRYO);
+			range = 3;
+		}
+	};
+
+	class Particle_Ice : public Particle {
+	public:
+		Particle_Ice() {
+			color = Color{ 170, 210, 255, 255 };
+			isStatic = true;
+		}
+	};
+
 	static std::map<std::string, std::function<std::unique_ptr<Particle>()>> gParticleTypes = {
 		{"sand",	[]() { return std::make_unique<Particle_Sand>(); }},
 		{"stone",	[]() { return std::make_unique<Particle_Stone>(); }},
@@ -99,5 +118,7 @@ namespace Core {
 		{"steam",	[]() { return std::make_unique<Particle_Steam>(); }},
 		{"smoke",	[]() { return std::make_unique<Particle_Smoke>(); }},
 		{"fire",	[]() { return std::make_unique<Particle_Fire>(); }},
+		{"cryo",	[]() { return std::make_unique<Particle_Cryo>(); }},
+		{"ice",		[]() { return std::make_unique<Particle_Ice>(); }},
 	};
 }
