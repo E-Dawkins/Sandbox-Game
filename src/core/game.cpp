@@ -46,12 +46,12 @@ void Core::Game::Update() {
 void Core::Game::Draw() {
 	BeginDrawing();
 		ClearBackground(BLACK);
-		if (!mHoveringAnyButton) {
-			DrawSpawnRadius();
-		}
-
 		for (const auto& p : mParticles) {
 			p->Draw();
+		}
+
+		if (!mHoveringAnyButton) {
+			DrawSpawnRadius();
 		}
 
 		for (const auto& b : mButtons) {
