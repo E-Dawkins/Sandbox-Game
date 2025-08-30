@@ -125,6 +125,10 @@ void Core::Game::ProcessInput() {
 
 		RemoveParticlesInRadius(mousePosX, mousePosY, mSpawnRadius);
 	}
+
+	// Increase / decrease spawn radius
+	mSpawnRadius += CLAMP(static_cast<int>(GetMouseWheelMove()), -1, 1);
+	mSpawnRadius = CLAMP(mSpawnRadius, 0, 5); // completely arbitrary max radius value
 }
 
 void Core::Game::AddParticleToSystem(int _posX, int _posY, std::string _type) const {
