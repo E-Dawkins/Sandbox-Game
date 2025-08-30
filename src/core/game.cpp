@@ -116,7 +116,7 @@ void Core::Game::ProcessInput() {
 	}
 }
 
-void Core::Game::AddParticleToSystem(int _posX, int _posY, std::string _type) {
+void Core::Game::AddParticleToSystem(int _posX, int _posY, std::string _type) const {
 	if (GetParticleAtPosition(_posX, _posY) != nullptr) {
 		return;
 	}
@@ -130,7 +130,7 @@ void Core::Game::AddParticleToSystem(int _posX, int _posY, std::string _type) {
 	mParticles.emplace_back(std::move(p));
 }
 
-void Core::Game::RemoveParticleFromSystem(int _posX, int _posY) {
+void Core::Game::RemoveParticleFromSystem(int _posX, int _posY) const {
 	auto& p = GetParticleAtPosition(_posX, _posY);
 	
 	if (p == nullptr) {

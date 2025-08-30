@@ -66,7 +66,7 @@ bool Core::Particle::TryMoveTo(const Game& _g, int _moveX, int _moveY) {
 		}
 		// Move to location is not possible
 		else {
-			HandleInteraction(p);
+			HandleInteraction(_g, p);
 			return false;
 		}
 	}
@@ -112,7 +112,7 @@ bool Core::Particle::IsMoveToOccupied(const Game& _g, int _moveX, int _moveY) {
 	return p != nullptr;
 }
 
-void Core::Particle::HandleInteraction(const std::unique_ptr<Particle>& _other) {
+void Core::Particle::HandleInteraction(const Game& _g, const std::unique_ptr<Particle>& _other) {
 	// By default do nothing
-	_other;
+	_g, _other;
 }

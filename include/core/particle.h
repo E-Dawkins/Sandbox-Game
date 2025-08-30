@@ -39,6 +39,6 @@ namespace Core {
 		bool IsMoveToOccupied(const Game& _g, int _moveX, int _moveY);
 
 	protected:
-		virtual void HandleInteraction(const std::unique_ptr<Particle>& _other);
+		virtual void HandleInteraction(const Game& _g, const std::unique_ptr<Particle>& _other);
 	};
 }

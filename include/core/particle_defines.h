@@ -18,6 +18,7 @@ namespace Core {
 	enum class GasDensities : int {
 		STEAM,
 		SMOKE,
+		FIRE,
 
 		COUNT
 	};
@@ -47,7 +48,7 @@ namespace Core {
 		}
 
 	protected:
-		void HandleInteraction(const std::unique_ptr<Particle>& _other) override;
+		void HandleInteraction(const Game& _g, const std::unique_ptr<Particle>& _other) override;
 	};
 
 	class Particle_Oil : public Particle {
@@ -80,6 +81,16 @@ namespace Core {
 		}
 	};
 
+	class Particle_Fire : public Particle {
+	public:
+		Particle_Fire() {
+			color = Color{ 255, 130, 0, 255 };
+			state = ParticleState::GAS;
+			density = static_cast<int>(GasDensities::FIRE);
+			range = 8;
+		}
+	};
+
 	static std::map<std::string, std::function<std::unique_ptr<Particle>()>> gParticleTypes = {
 		{"sand",	[]() { return std::make_unique<Particle_Sand>(); }},
 		{"stone",	[]() { return std::make_unique<Particle_Stone>(); }},
@@ -87,5 +98,6 @@ namespace Core {
 		{"oil",		[]() { return std::make_unique<Particle_Oil>(); }},
 		{"steam",	[]() { return std::make_unique<Particle_Steam>(); }},
 		{"smoke",	[]() { return std::make_unique<Particle_Smoke>(); }},
+		{"fire",	[]() { return std::make_unique<Particle_Fire>(); }},
 	};
 }
