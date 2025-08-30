@@ -54,6 +54,10 @@ bool Core::Particle::TryMoveTo(const Game& _g, int _moveX, int _moveY) {
 	// Is the move to location occupied?
 	const auto& p = _g.GetParticleAtPosition(offsetPosX, offsetPosY);
 	if (p != nullptr) {
+		// Run interaction logic between particles
+		HandleInteraction(_g, p);
+		p->HandleInteraction(_g, _g.GetParticleAtPosition(posX, posY));
+
 		bool solidIntoLiquid = (state == ParticleState::SOLID && p->state == ParticleState::LIQUID);
 		bool liquidIntoLiquid = (state == ParticleState::LIQUID && p->state == ParticleState::LIQUID && density > p->density);
 		bool solidIntoGas = (state == ParticleState::SOLID && p->state == ParticleState::GAS);
@@ -66,7 +70,6 @@ bool Core::Particle::TryMoveTo(const Game& _g, int _moveX, int _moveY) {
 		}
 		// Move to location is not possible
 		else {
-			HandleInteraction(_g, p);
 			return false;
 		}
 	}

@@ -70,6 +70,9 @@ namespace Core {
 			density = static_cast<int>(GasDensities::STEAM);
 			range = 10;
 		}
+
+	protected:
+		void HandleInteraction(const Game& _g, const std::unique_ptr<Particle>& _other) override;
 	};
 
 	class Particle_Smoke : public Particle {
@@ -108,6 +111,9 @@ namespace Core {
 			color = Color{ 170, 210, 255, 255 };
 			isStatic = true;
 		}
+
+	protected:
+		void HandleInteraction(const Game& _g, const std::unique_ptr<Particle>& _other) override;
 	};
 
 	static std::map<std::string, std::function<std::unique_ptr<Particle>()>> gParticleTypes = {
