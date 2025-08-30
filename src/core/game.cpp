@@ -57,14 +57,16 @@ bool Core::Game::IsRunning() const {
 	return !WindowShouldClose();
 }
 
-const std::shared_ptr<Core::Particle> Core::Game::GetParticleAtPosition(int _x, int _y) const {
+const std::unique_ptr<Core::Particle>& Core::Game::GetParticleAtPosition(int _x, int _y) const {
 	for (const auto& p : mParticles) {
 		if (p->posX == _x && p->posY == _y) {
 			return p;
 		}
 	}
 
-	return nullptr;
+	// Probably not advised, but it does work
+	static auto nullParticle = std::unique_ptr<Core::Particle>{};
+	return nullParticle;
 }
 
 bool Core::Game::IsInScreenBounds(int _x, int _y) const {
@@ -125,7 +127,7 @@ void Core::Game::AddParticleToSystem(int _posX, int _posY, std::string _type) {
 	p->size = mParticleSize;
 	p->color = Core::Raylib_Helpers::RandomOffsetColor(p->color, 20);
 
-	mParticles.emplace_back(p);
+	mParticles.emplace_back(std::move(p));
 }
 
 void Core::Game::RemoveParticleFromSystem(int _posX, int _posY) {

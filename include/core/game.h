@@ -22,7 +22,7 @@ namespace Core {
 		// Helpers
 
 		bool IsRunning() const;
-		const std::shared_ptr<Core::Particle> GetParticleAtPosition(int _x, int _y) const;
+		const std::unique_ptr<Core::Particle>& GetParticleAtPosition(int _x, int _y) const;
 		bool IsInScreenBounds(int _x, int _y) const;
 
 	private:
@@ -36,7 +36,7 @@ namespace Core {
 		void RemoveParticlesInRadius(int _posX, int _posY, int _radius);
 
 	private:
-		std::vector<std::shared_ptr<Core::Particle>> mParticles = {};
+		std::vector<std::unique_ptr<Core::Particle>> mParticles = {};
 		int mParticleSize = 10;
 
 		std::vector<std::unique_ptr<Ui::Button>> mButtons = {};

@@ -112,7 +112,7 @@ bool Core::Particle::IsMoveToOccupied(const Game& _g, int _moveX, int _moveY) {
 	return p != nullptr;
 }
 
-void Core::Particle::HandleInteraction(const std::shared_ptr<Particle>& _other) {
+void Core::Particle::HandleInteraction(const std::unique_ptr<Particle>& _other) {
 	// By default do nothing
 	_other;
 }

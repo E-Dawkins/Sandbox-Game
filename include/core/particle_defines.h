@@ -47,7 +47,7 @@ namespace Core {
 		}
 
 	protected:
-		void HandleInteraction(const std::shared_ptr<Particle>& _other) override;
+		void HandleInteraction(const std::unique_ptr<Particle>& _other) override;
 	};
 
 	class Particle_Oil : public Particle {
@@ -80,12 +80,12 @@ namespace Core {
 		}
 	};
 
-	static std::map<std::string, std::function<std::shared_ptr<Particle>()>> gParticleTypes = {
-		{"sand",	[]() { return std::make_shared<Particle_Sand>(); }},
-		{"stone",	[]() { return std::make_shared<Particle_Stone>(); }},
-		{"water",	[]() { return std::make_shared<Particle_Water>(); }},
-		{"oil",		[]() { return std::make_shared<Particle_Oil>(); }},
-		{"steam",	[]() { return std::make_shared<Particle_Steam>(); }},
-		{"smoke",	[]() { return std::make_shared<Particle_Smoke>(); }},
+	static std::map<std::string, std::function<std::unique_ptr<Particle>()>> gParticleTypes = {
+		{"sand",	[]() { return std::make_unique<Particle_Sand>(); }},
+		{"stone",	[]() { return std::make_unique<Particle_Stone>(); }},
+		{"water",	[]() { return std::make_unique<Particle_Water>(); }},
+		{"oil",		[]() { return std::make_unique<Particle_Oil>(); }},
+		{"steam",	[]() { return std::make_unique<Particle_Steam>(); }},
+		{"smoke",	[]() { return std::make_unique<Particle_Smoke>(); }},
 	};
 }
