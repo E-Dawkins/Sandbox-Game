@@ -66,6 +66,7 @@ bool Core::Particle::TryMoveTo(const Game& _g, int _moveX, int _moveY) {
 		}
 		// Move to location is not possible
 		else {
+			HandleInteraction(p);
 			return false;
 		}
 	}
@@ -109,4 +110,9 @@ bool Core::Particle::IsMoveToOccupied(const Game& _g, int _moveX, int _moveY) {
 	// If particle is valid, position is occupied
 	const auto& p = _g.GetParticleAtPosition(offsetPosX, offsetPosY);
 	return p != nullptr;
+}
+
+void Core::Particle::HandleInteraction(const std::shared_ptr<Particle>& _other) {
+	// By default do nothing
+	_other;
 }

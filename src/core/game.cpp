@@ -119,13 +119,13 @@ void Core::Game::AddParticleToSystem(int _posX, int _posY, std::string _type) {
 		return;
 	}
 	
-	Core::Particle p = Core::Particle(Core::gParticleTypes[_type]);
-	p.posX = _posX;
-	p.posY = _posY;
-	p.size = mParticleSize;
-	p.color = Core::Raylib_Helpers::RandomOffsetColor(p.color, 20);
+	auto p = Core::gParticleTypes[_type]();
+	p->posX = _posX;
+	p->posY = _posY;
+	p->size = mParticleSize;
+	p->color = Core::Raylib_Helpers::RandomOffsetColor(p->color, 20);
 
-	mParticles.emplace_back(std::make_shared<Core::Particle>(p));
+	mParticles.emplace_back(p);
 }
 
 void Core::Game::RemoveParticleFromSystem(int _posX, int _posY) {

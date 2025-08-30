@@ -4,6 +4,8 @@
 
 #include <map>
 #include <string>
+#include <functional>
+#include <memory>
 
 namespace Core {
 	enum class LiquidDensities : int {
@@ -43,6 +45,9 @@ namespace Core {
 			density = static_cast<int>(LiquidDensities::WATER);
 			range = 8;
 		}
+
+	protected:
+		void HandleInteraction(const std::shared_ptr<Particle>& _other) override;
 	};
 
 	class Particle_Oil : public Particle {
@@ -75,12 +80,12 @@ namespace Core {
 		}
 	};
 
-	static std::map<std::string, Particle> gParticleTypes = {
-		{"sand", Particle_Sand()},
-		{"stone", Particle_Stone()},
-		{"water", Particle_Water()},
-		{"oil", Particle_Oil()},
-		{"steam", Particle_Steam()},
-		{"smoke", Particle_Smoke()},
+	static std::map<std::string, std::function<std::shared_ptr<Particle>()>> gParticleTypes = {
+		{"sand",	[]() { return std::make_shared<Particle_Sand>(); }},
+		{"stone",	[]() { return std::make_shared<Particle_Stone>(); }},
+		{"water",	[]() { return std::make_shared<Particle_Water>(); }},
+		{"oil",		[]() { return std::make_shared<Particle_Oil>(); }},
+		{"steam",	[]() { return std::make_shared<Particle_Steam>(); }},
+		{"smoke",	[]() { return std::make_shared<Particle_Smoke>(); }},
 	};
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <raylib.h>
+#include <memory>
 
 namespace Core {
 	class Game;
@@ -36,5 +37,8 @@ namespace Core {
 		bool TryMoveTo(const Game& _g, int _moveX, int _moveY);
 		bool TryMoveToRanged(const Game& _g, int _checkRange, bool _checkLeft, bool _checkDown);
 		bool IsMoveToOccupied(const Game& _g, int _moveX, int _moveY);
+
+	protected:
+		virtual void HandleInteraction(const std::shared_ptr<Particle>& _other);
 	};
 }

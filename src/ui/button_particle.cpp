@@ -44,6 +44,6 @@ void Ui::Button_Particle::Draw() {
 }
 
 void Ui::Button_Particle::SetParticleType(std::string _type) {
-	mParticleColor = Core::gParticleTypes[_type].color;
+	mParticleColor = Core::gParticleTypes[_type]()->color;
 	mParticleType = _type;
 }
