@@ -32,10 +32,7 @@ namespace Core {
 		void AddParticleToSystem(int _posX, int _posY, std::string _type) const;
 		void RemoveParticleFromSystem(int _posX, int _posY) const;
 
-		void SpawnParticlesInRadius(int _posX, int _posY, int _radius, std::string _type);
-		void RemoveParticlesInRadius(int _posX, int _posY, int _radius);
-
-		void DrawSpawnRadius();
+		void ApplyFuncInRadius(int _r, std::function<void(int, int)> _f);
 
 	private:
 		// This is mutable to allow 'AddParticleToSystem' and 'RemoveParticleFromSystem' to work on const Game objects

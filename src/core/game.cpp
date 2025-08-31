@@ -51,7 +51,12 @@ void Core::Game::Draw() {
 		}
 
 		if (!mHoveringAnyButton) {
-			DrawSpawnRadius();
+			const int mousePosX = static_cast<int>(GetMouseX()) / mParticleSize;
+			const int mousePosY = static_cast<int>(GetMouseY()) / mParticleSize;
+
+			ApplyFuncInRadius(mSpawnRadius, [&](int _x, int _y) {
+				DrawRectangleLines((mousePosX + _x) * mParticleSize, (mousePosY + _y) * mParticleSize, mParticleSize, mParticleSize, MAGENTA);
+			});
 		}
 
 		for (const auto& b : mButtons) {
@@ -108,22 +113,22 @@ void Core::Game::SetupButtons() {
 void Core::Game::ProcessInput() {
 	// Spawn particles
 	if (!mMouseInputConsumed && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-		Vector2 mousePos = GetMousePosition();
+		const int mousePosX = static_cast<int>(GetMouseX()) / mParticleSize;
+		const int mousePosY = static_cast<int>(GetMouseY()) / mParticleSize;
 
-		const int mousePosX = static_cast<int>(mousePos.x) / mParticleSize;
-		const int mousePosY = static_cast<int>(mousePos.y) / mParticleSize;
-
-		SpawnParticlesInRadius(mousePosX, mousePosY, mSpawnRadius, mTypeToSpawn);
+		ApplyFuncInRadius(mSpawnRadius, [&](int _x, int _y) {
+			AddParticleToSystem(mousePosX + _x, mousePosY + _y, mTypeToSpawn);
+		});
 	}
 
 	// Remove particles
 	if (!mMouseInputConsumed && IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
-		Vector2 mousePos = GetMousePosition();
+		const int mousePosX = static_cast<int>(GetMouseX()) / mParticleSize;
+		const int mousePosY = static_cast<int>(GetMouseY()) / mParticleSize;
 
-		const int mousePosX = static_cast<int>(mousePos.x) / mParticleSize;
-		const int mousePosY = static_cast<int>(mousePos.y) / mParticleSize;
-
-		RemoveParticlesInRadius(mousePosX, mousePosY, mSpawnRadius);
+		ApplyFuncInRadius(mSpawnRadius, [&](int _x, int _y) {
+			RemoveParticleFromSystem(mousePosX + _x, mousePosY + _y);
+		});
 	}
 
 	// Increase / decrease spawn radius
@@ -132,6 +137,10 @@ void Core::Game::ProcessInput() {
 }
 
 void Core::Game::AddParticleToSystem(int _posX, int _posY, std::string _type) const {
+	if (!IsInScreenBounds(_posX, _posY)) {
+		return;
+	}
+
 	if (GetParticleAtPosition(_posX, _posY) != nullptr) {
 		return;
 	}
@@ -163,62 +172,12 @@ void Core::Game::ReplaceParticleAtPos(int _posX, int _posY, std::string _type) c
 	AddParticleToSystem(_posX, _posY, _type);
 }
 
-void Core::Game::SpawnParticlesInRadius(int _posX, int _posY, int _radius, std::string _type) {
-	const int radiusSquared = _radius * _radius;
-	for (int y = -_radius; y <= _radius; y++) {
-		for (int x = -_radius; x <= _radius; x++) {
-			// Outside circle radius
-			if ((x * x) + (y * y) > radiusSquared) {
-				continue;
-			}
-
-			const int offsetX = _posX + x;
-			const int offsetY = _posY + y;
-
-			if (IsInScreenBounds(offsetX, offsetY)) {
-				AddParticleToSystem(offsetX, offsetY, _type);
-			}
-		}
-	}
-}
-
-void Core::Game::RemoveParticlesInRadius(int _posX, int _posY, int _radius) {
-	const int radiusSquared = _radius * _radius;
-	for (int y = -_radius; y <= _radius; y++) {
-		for (int x = -_radius; x <= _radius; x++) {
-			// Outside circle radius
-			if ((x * x) + (y * y) > radiusSquared) {
-				continue;
-			}
-
-			const int offsetX = _posX + x;
-			const int offsetY = _posY + y;
-
-			if (IsInScreenBounds(offsetX, offsetY)) {
-				RemoveParticleFromSystem(offsetX, offsetY);
-			}
-		}
-	}
-}
-
-void Core::Game::DrawSpawnRadius() {
-	const Vector2 mousePos = GetMousePosition();
-	const int mousePosX = static_cast<int>(mousePos.x) / mParticleSize;
-	const int mousePosY = static_cast<int>(mousePos.y) / mParticleSize;
-
-	const int radiusSquared = mSpawnRadius * mSpawnRadius;
-	for (int y = -mSpawnRadius; y <= mSpawnRadius; y++) {
-		for (int x = -mSpawnRadius; x <= mSpawnRadius; x++) {
-			// Outside circle radius
-			if ((x * x) + (y * y) > radiusSquared) {
-				continue;
-			}
-
-			const int offsetX = mousePosX + x;
-			const int offsetY = mousePosY + y;
-
-			if (IsInScreenBounds(offsetX, offsetY)) {
-				DrawRectangleLines(offsetX * mParticleSize, offsetY * mParticleSize, mParticleSize, mParticleSize, MAGENTA);
+void Core::Game::ApplyFuncInRadius(int _r, std::function<void(int, int)> _f) {
+	const int radiusSquared = _r * _r;
+	for (int x = -_r; x <= _r; x++) {
+		for (int y = -_r; y <= _r; y++) {
+			if ((x * x) + (y * y) <= radiusSquared) {
+				_f(x, y);
 			}
 		}
 	}
