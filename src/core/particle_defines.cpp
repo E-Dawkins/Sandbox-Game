@@ -4,37 +4,23 @@
 #include "core/game.h"
 
 void Core::Particle_Water::HandleInteraction(const Game& _g, const std::unique_ptr<Particle>& _other) {
-	if (dynamic_cast<Particle_Fire*>(_other.get())) {
-		// Replace ourself with steam particle
-		const int storedPosX = posX, storedPosY = posY;
-
-		_g.RemoveParticleFromSystem(storedPosX, storedPosY);
-		_g.AddParticleToSystem(storedPosX, storedPosY, "steam");
+	if (_other->IsOfType<Particle_Fire>()) {
+		_g.ReplaceParticleAtPos(posX, posY, "steam");
 	}
-	else if (dynamic_cast<Particle_Cryo*>(_other.get())) {
-		// Replace ourself with ice particle
-		const int storedPosX = posX, storedPosY = posY;
-		_g.RemoveParticleFromSystem(storedPosX, storedPosY);
-		_g.AddParticleToSystem(storedPosX, storedPosY, "ice");
+
+	if (_other->IsOfType<Particle_Cryo>()) {
+		_g.ReplaceParticleAtPos(posX, posY, "ice");
 	}
 }
 
 void Core::Particle_Steam::HandleInteraction(const Game& _g, const std::unique_ptr<Particle>& _other) {
-	if (dynamic_cast<Particle_Cryo*>(_other.get())) {
-		// Replace ourself with water particle
-		const int storedPosX = posX, storedPosY = posY;
-
-		_g.RemoveParticleFromSystem(storedPosX, storedPosY);
-		_g.AddParticleToSystem(storedPosX, storedPosY, "water");
+	if (_other->IsOfType<Particle_Cryo>()) {
+		_g.ReplaceParticleAtPos(posX, posY, "water");
 	}
 }
 
 void Core::Particle_Ice::HandleInteraction(const Game& _g, const std::unique_ptr<Particle>& _other) {
-	if (dynamic_cast<Particle_Fire*>(_other.get())) {
-		// Replace ourself with water particle
-		const int storedPosX = posX, storedPosY = posY;
-
-		_g.RemoveParticleFromSystem(storedPosX, storedPosY);
-		_g.AddParticleToSystem(storedPosX, storedPosY, "water");
+	if (_other->IsOfType<Particle_Fire>()) {
+		_g.ReplaceParticleAtPos(posX, posY, "water");
 	}
 }

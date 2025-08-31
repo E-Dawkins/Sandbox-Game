@@ -33,6 +33,11 @@ namespace Core {
 		void TickPhysics(const Game& _g);
 		void Draw();
 		
+		template<typename T>
+		bool IsOfType() {
+			return dynamic_cast<T*>(this);
+		}
+
 	private:
 		bool TryMoveTo(const Game& _g, int _moveX, int _moveY);
 		bool TryMoveToRanged(const Game& _g, int _checkRange, bool _checkLeft, bool _checkDown);

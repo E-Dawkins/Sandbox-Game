@@ -158,6 +158,11 @@ void Core::Game::RemoveParticleFromSystem(int _posX, int _posY) const {
 	}
 }
 
+void Core::Game::ReplaceParticleAtPos(int _posX, int _posY, std::string _type) const {
+	RemoveParticleFromSystem(_posX, _posY);
+	AddParticleToSystem(_posX, _posY, _type);
+}
+
 void Core::Game::SpawnParticlesInRadius(int _posX, int _posY, int _radius, std::string _type) {
 	const int radiusSquared = _radius * _radius;
 	for (int y = -_radius; y <= _radius; y++) {

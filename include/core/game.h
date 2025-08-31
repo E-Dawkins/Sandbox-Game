@@ -8,8 +8,6 @@
 #include <vector>
 
 namespace Core {
-	class Particle;
-	
 	class Game {
 	public:
 		void Init();
@@ -25,13 +23,14 @@ namespace Core {
 		const std::unique_ptr<Core::Particle>& GetParticleAtPosition(int _x, int _y) const;
 		bool IsInScreenBounds(int _x, int _y) const;
 
-		void AddParticleToSystem(int _posX, int _posY, std::string _type) const;
-		void RemoveParticleFromSystem(int _posX, int _posY) const;
+		void ReplaceParticleAtPos(int _posX, int _posY, std::string _type) const;
 
 	private:
 		void SetupButtons();
 
 		void ProcessInput();
+		void AddParticleToSystem(int _posX, int _posY, std::string _type) const;
+		void RemoveParticleFromSystem(int _posX, int _posY) const;
 
 		void SpawnParticlesInRadius(int _posX, int _posY, int _radius, std::string _type);
 		void RemoveParticlesInRadius(int _posX, int _posY, int _radius);
