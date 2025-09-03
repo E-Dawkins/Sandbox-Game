@@ -55,11 +55,14 @@ namespace Core {
 	class Particle_Oil : public Particle {
 	public:
 		Particle_Oil() {
-			color = Color{ 50, 50, 50, 255 }; // Darker gray
+			color = Color{ 41, 30, 20, 255 };
 			state = ParticleState::LIQUID;
 			density = static_cast<int>(LiquidDensities::OIL);
 			range = 4;
 		}
+
+	protected:
+		void HandleInteraction(const Game& _g, const std::unique_ptr<Particle>& _other) override;
 	};
 
 	class Particle_Steam : public Particle {
@@ -78,7 +81,7 @@ namespace Core {
 	class Particle_Smoke : public Particle {
 	public:
 		Particle_Smoke() {
-			color = DARKGRAY;
+			color = Color{ 60, 60, 60, 255 };
 			state = ParticleState::GAS;
 			density = static_cast<int>(GasDensities::SMOKE);
 			range = 6;
