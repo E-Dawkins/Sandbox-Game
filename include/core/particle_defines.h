@@ -29,6 +29,9 @@ namespace Core {
 		Particle_Sand() {
 			color = ORANGE;
 		}
+
+	protected:
+		void HandleInteraction(const Game& _g, const std::unique_ptr<Particle>& _other) override;
 	};
 
 	class Particle_Stone : public Particle {
@@ -36,6 +39,15 @@ namespace Core {
 		Particle_Stone() {
 			color = GRAY;
 			isStatic = true;
+		}
+	};
+
+	class Particle_Glass : public Particle {
+	public:
+		Particle_Glass() {
+			color = SKYBLUE;
+			isStatic = true;
+			drawType = ParticleDrawType::OUTLINE;
 		}
 	};
 
@@ -122,6 +134,7 @@ namespace Core {
 	static std::map<std::string, std::function<std::unique_ptr<Particle>()>> gParticleTypes = {
 		{"sand",	[]() { return std::make_unique<Particle_Sand>(); }},
 		{"stone",	[]() { return std::make_unique<Particle_Stone>(); }},
+		{"glass",	[]() { return std::make_unique<Particle_Glass>(); }},
 		{"water",	[]() { return std::make_unique<Particle_Water>(); }},
 		{"oil",		[]() { return std::make_unique<Particle_Oil>(); }},
 		{"steam",	[]() { return std::make_unique<Particle_Steam>(); }},

@@ -30,3 +30,9 @@ void Core::Particle_Oil::HandleInteraction(const Game& _g, const std::unique_ptr
 		_g.ReplaceParticleAtPos(posX, posY, "smoke");
 	}
 }
+
+void Core::Particle_Sand::HandleInteraction(const Game& _g, const std::unique_ptr<Particle>& _other) {
+	if (_other->IsOfType<Particle_Fire>()) {
+		_g.ReplaceParticleAtPos(posX, posY, "glass");
+	}
+}
