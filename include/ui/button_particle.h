@@ -25,5 +25,7 @@ namespace Ui {
 		void Draw() override;
 
 		void SetParticleType(std::string _type);
+
+		virtual void ReconstructButton();
 	};
 }

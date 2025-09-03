@@ -143,4 +143,8 @@ namespace Core {
 		{"cryo",	[]() { return std::make_unique<Particle_Cryo>(); }},
 		{"ice",		[]() { return std::make_unique<Particle_Ice>(); }},
 	};
+
+	static std::string gParticleStateNames[static_cast<int>(ParticleState::COUNT)] = {
+		"Solid", "Liquid", "Gas"
+	};
 }

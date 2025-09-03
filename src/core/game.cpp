@@ -5,7 +5,7 @@
 
 #include "core/particle_defines.h"
 #include "core/raylib_helpers.h"
-#include "ui/button_particle.h"
+#include "ui/button_category.h"
 
 void Core::Game::Init() {
 	InitWindow(800, 600, "Sandbox Game");
@@ -90,24 +90,11 @@ bool Core::Game::IsInScreenBounds(int _x, int _y) const {
 }
 
 void Core::Game::SetupButtons() {
-	// Particle selection buttons
-	const int particleButtonSize = 50;
-	const int particleButtonSpacing = 20;
-
-	const int particleButtonCount = static_cast<int>(Core::gParticleTypes.size());
-	const int particleButtonTotalWidth = (particleButtonSize * particleButtonCount) + ((particleButtonCount + 1) * particleButtonSpacing);
-	const int particleButtonStartX = (GetRenderWidth() / 2) - (particleButtonTotalWidth / 2);
-
-	int count = 0;
-	for (const auto& pair : Core::gParticleTypes) {
-		const int buttonX = particleButtonStartX + ((particleButtonSize + particleButtonSpacing) * count);
-
-		Ui::Button_Particle ParticleButton = Ui::Button(buttonX, 20, 50, 50, [&]() { mTypeToSpawn = pair.first; });
-		ParticleButton.SetParticleType(pair.first);
-		mButtons.emplace_back(std::make_unique<Ui::Button_Particle>(ParticleButton));
-
-		count++;
-	}
+	// Category buttons
+	auto particleButtonCallback = [&](std::string _s) { mTypeToSpawn = _s; };
+	mButtons.emplace_back(std::make_unique<Ui::Button_Category>(10, 10, 75, 40, Core::ParticleState::SOLID, particleButtonCallback));
+	mButtons.emplace_back(std::make_unique<Ui::Button_Category>(10, 80, 75, 40, Core::ParticleState::LIQUID, particleButtonCallback));
+	mButtons.emplace_back(std::make_unique<Ui::Button_Category>(10, 150, 75, 40, Core::ParticleState::GAS, particleButtonCallback));
 }
 
 void Core::Game::ProcessInput() {

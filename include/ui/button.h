@@ -23,8 +23,7 @@ namespace Ui {
 		ButtonCallback mCallback;
 
 	public:
-		Button(int _posX, int _posY, ButtonCallback _callback);
-		Button(int _posX, int _posY, int _sizeX, int _sizeY, ButtonCallback _callback);
+		Button(int _posX, int _posY, int _sizeX, int _sizeY, ButtonCallback _callback = {});
 
 		// @returns Whether the button has 'consumed' a mouse click
 		virtual bool Update(const Vector2 _mousePos);
@@ -33,6 +32,7 @@ namespace Ui {
 		// Helpers
 
 		const ButtonCallback& GetCallback() const;
-		bool IsHovered() const;
+		virtual bool IsHovered() const;
+		virtual void ReconstructButton();
 	};
 }
