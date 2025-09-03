@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ui/button.h"
+#include "core/particle.h"
 
 #include <string>
 
@@ -15,6 +16,8 @@ namespace Ui {
 
 		std::string mParticleType;
 		Vector2 mTextPos;
+
+		Core::ParticleDrawType mParticleDrawType;
 
 	public:
 		Button_Particle(const Button& x);

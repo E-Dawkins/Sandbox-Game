@@ -14,6 +14,13 @@ namespace Core {
 		COUNT
 	};
 
+	enum class ParticleDrawType {
+		FILLED,
+		OUTLINE,
+
+		COUNT
+	};
+
 	class Particle {
 	public:
 		int posX = 0, posY = 0;
@@ -22,12 +29,13 @@ namespace Core {
 
 		// Attributes
 
-		bool isStatic = false;							// should this particle be immovable?
+		bool isStatic = false;									// should this particle be immovable?
 
-		ParticleState state = ParticleState::SOLID;		// what state is this particle in?
+		ParticleState state = ParticleState::SOLID;				// what state is this particle in?
+		ParticleDrawType drawType = ParticleDrawType::FILLED;	// how should this particle be drawn?
 
-		int density = 0;								// determines order that non-solids stack on each other
-		int range = 0;									// how far does a non-solid check for elevation change?
+		int density = 0;										// determines order that non-solids stack on each other
+		int range = 0;											// how far does a non-solid check for elevation change?
 
 	public:
 		void TickPhysics(const Game& _g);

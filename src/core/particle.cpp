@@ -39,7 +39,12 @@ void Core::Particle::TickPhysics(const Game& _g) {
 }
 
 void Core::Particle::Draw() {
-	DrawRectangle(posX * size, posY * size, size, size, color);
+	const int globalPosX = posX * size, globalPosY = posY * size;
+
+	switch (drawType) {
+		case ParticleDrawType::FILLED: DrawRectangle(globalPosX, globalPosY, size, size, color); break;
+		case ParticleDrawType::OUTLINE: DrawRectangleLines(globalPosX, globalPosY, size, size, color); break;
+	}
 }
 
 bool Core::Particle::TryMoveTo(const Game& _g, int _moveX, int _moveY) {
