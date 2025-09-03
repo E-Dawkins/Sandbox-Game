@@ -18,11 +18,10 @@ namespace Core {
 		}
 
 		inline void DrawTextCenteredEx(const char* _text, Vector2 _position, float _fontSize, float _spacing, Color _tint) {
-			const int textWidth = MeasureText(_text, static_cast<int>(_fontSize));
-
+			const Vector2 textSize = MeasureTextEx(GetFontDefault(), _text, _fontSize, _spacing);
 			const Vector2 offsetPosition{
-				.x = _position.x - textWidth / 2.f,
-				.y = _position.y
+				.x = _position.x - textSize.x / 2,
+				.y = _position.y - textSize.y / 2
 			};
 
 			DrawTextEx(GetFontDefault(), _text, offsetPosition, _fontSize, _spacing, _tint);

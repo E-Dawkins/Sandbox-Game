@@ -32,7 +32,7 @@ Ui::Button_Particle::Button_Particle(const Button& x)
 
 	mTextPos = Vector2{
 		.x = static_cast<float>(posX + sizeX / 2),
-		.y = static_cast<float>(posY + sizeY + 5)
+		.y = static_cast<float>(posY + sizeY + 12)
 	};
 }
 
