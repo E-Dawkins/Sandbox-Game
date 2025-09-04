@@ -49,5 +49,8 @@ namespace Core {
 
 		std::string mTypeToSpawn = "sand";
 		int mSpawnRadius = 3;
+
+		bool mIsSimulating = true;
+		bool mShouldStep = false;
 	};
 }

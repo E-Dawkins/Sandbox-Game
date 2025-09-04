@@ -6,6 +6,7 @@
 #include "core/particle_defines.h"
 #include "core/raylib_helpers.h"
 #include "ui/button_category.h"
+#include "ui/button_simulation.h"
 
 void Core::Game::Init() {
 	InitWindow(800, 600, "Sandbox Game");
@@ -38,8 +39,12 @@ void Core::Game::Update() {
 
 	ProcessInput();
 
-	for (const auto& p : mParticles) {
-		p->TickPhysics(*this);
+	if (mIsSimulating || mShouldStep) {
+		for (const auto& p : mParticles) {
+			p->TickPhysics(*this);
+		}
+
+		mShouldStep = false;
 	}
 }
 
@@ -95,6 +100,12 @@ void Core::Game::SetupButtons() {
 	mButtons.emplace_back(std::make_unique<Ui::Button_Category>(10, 10, 75, 40, Core::ParticleState::SOLID, particleButtonCallback));
 	mButtons.emplace_back(std::make_unique<Ui::Button_Category>(10, 80, 75, 40, Core::ParticleState::LIQUID, particleButtonCallback));
 	mButtons.emplace_back(std::make_unique<Ui::Button_Category>(10, 150, 75, 40, Core::ParticleState::GAS, particleButtonCallback));
+
+	// Simulation controls
+	const int startX = GetRenderWidth() - 60;
+	mButtons.emplace_back(std::make_unique<Ui::Button_Simulation>(startX, 10, 50, 50, Ui::SimulationControl::PLAY, [&]() { mIsSimulating = true; }));
+	mButtons.emplace_back(std::make_unique<Ui::Button_Simulation>(startX, 70, 50, 50, Ui::SimulationControl::PAUSE, [&]() { mIsSimulating = false; }));
+	mButtons.emplace_back(std::make_unique<Ui::Button_Simulation>(startX, 130, 50, 50, Ui::SimulationControl::STEP, [&]() { mShouldStep = true; }));
 }
 
 void Core::Game::ProcessInput() {
