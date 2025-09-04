@@ -25,6 +25,9 @@ namespace Core {
 
 		void ReplaceParticleAtPos(int _posX, int _posY, std::string _type) const;
 
+		// Replace (1) with _resultType, and (2) with "null"
+		void ApplyParticleInteraction(int _posX1, int _posY1, int _posX2, int _posY2, std::string _resultType) const;
+
 	private:
 		void SetupButtons();
 

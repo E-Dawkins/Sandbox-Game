@@ -41,6 +41,12 @@ void Core::Game::Update() {
 
 	if (mIsSimulating || mShouldStep) {
 		for (const auto& p : mParticles) {
+			// It is possible that this particle got removed
+			// in some particle interaction during this frame
+			if (p == nullptr) {
+				continue;
+			}
+
 			p->TickPhysics(*this);
 		}
 
@@ -167,7 +173,15 @@ void Core::Game::RemoveParticleFromSystem(int _posX, int _posY) const {
 
 void Core::Game::ReplaceParticleAtPos(int _posX, int _posY, std::string _type) const {
 	RemoveParticleFromSystem(_posX, _posY);
-	AddParticleToSystem(_posX, _posY, _type);
+
+	if (_type != "null") {
+		AddParticleToSystem(_posX, _posY, _type);
+	}
+}
+
+void Core::Game::ApplyParticleInteraction(int _posX1, int _posY1, int _posX2, int _posY2, std::string _resultType) const {
+	ReplaceParticleAtPos(_posX1, _posY1, _resultType);
+	ReplaceParticleAtPos(_posX2, _posY2, "null");
 }
 
 void Core::Game::ApplyFuncInRadius(int _r, std::function<void(int, int)> _f) {
