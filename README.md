@@ -1,13 +1,18 @@
 # Sandbox Game
-This is a WIP powder / sand simulation game
+A simple but powerful powder / particle simulation
 
-## Planned features
-- Place-able powder
-  - Rock
+## Current features
+- Place-able particles
+  - Stone
   - Sand
-  - Dirt
+  - Water
+  - Steam
+  - etc.
+- Particle interactions
+  - Water + Fire = Steam
   - etc.
 - Real-time pixel powder simulation
+- Pause and physics step support
 
 ## How to build
 Open or navigate command prompt to the folder containing 'CMakeLists.txt' and run this command
