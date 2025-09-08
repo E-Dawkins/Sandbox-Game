@@ -2,6 +2,7 @@
 
 #include <raylib.h>
 #include <cmath>
+#include <algorithm>
 
 namespace Core {
 	namespace Raylib_Helpers {
@@ -25,6 +26,15 @@ namespace Core {
 			};
 
 			DrawTextEx(GetFontDefault(), _text, offsetPosition, _fontSize, _spacing, _tint);
+		}
+
+		inline std::string ToUpper(std::string _s) {
+			std::transform(
+				_s.begin(), _s.end(),					// range
+				_s.begin(),								// destination
+				[](auto c) { return std::toupper(c); }	// per-char action
+			);
+			return _s;
 		}
 	}
 }

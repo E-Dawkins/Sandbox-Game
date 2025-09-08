@@ -73,6 +73,11 @@ void Core::Game::Draw() {
 		for (const auto& b : mButtons) {
 			b->Draw();
 		}
+
+		std::string typeInUpperCase = Core::Raylib_Helpers::ToUpper(mTypeToSpawn);
+		std::string simulationState = mIsSimulating ? "PLAYING" : "PAUSED";
+
+		Core::Raylib_Helpers::DrawTextCenteredEx(std::format("- {} | {} -", typeInUpperCase, simulationState).c_str(), {400, 20}, 18, 2, WHITE);
 	EndDrawing();
 }
 
