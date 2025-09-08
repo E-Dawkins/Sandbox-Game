@@ -1,6 +1,5 @@
 #include "core/particle_defines.h"
 
-#include <iostream>
 #include "core/game.h"
 
 void Core::Particle_Water::HandleInteraction(const Game& _g, const std::unique_ptr<Particle>& _other) {
@@ -10,6 +9,16 @@ void Core::Particle_Water::HandleInteraction(const Game& _g, const std::unique_p
 
 	if (_other->IsOfType<Particle_Cryo>()) {
 		_g.ApplyParticleInteraction(posX, posY, _other->posX, _other->posY, "ice");
+	}
+
+	if (_other->IsOfType<Particle_Lava>()) {
+		// Apple interaction to vertically lower particle
+		if (posY < _other->posY) {
+			_g.ApplyParticleInteraction(_other->posX, _other->posY, posX, posY, "stone");
+		}
+		else {
+			_g.ApplyParticleInteraction(posX, posY, _other->posX, _other->posY, "stone");
+		}
 	}
 }
 

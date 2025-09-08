@@ -11,6 +11,7 @@ namespace Core {
 	enum class LiquidDensities : int {
 		OIL,
 		WATER,
+		LAVA,
 
 		COUNT
 	};
@@ -131,6 +132,16 @@ namespace Core {
 		void HandleInteraction(const Game& _g, const std::unique_ptr<Particle>& _other) override;
 	};
 
+	class Particle_Lava : public Particle {
+	public:
+		Particle_Lava() {
+			color = ORANGE;
+			state = ParticleState::LIQUID;
+			density = static_cast<int>(LiquidDensities::LAVA);
+			range = 3;
+		}
+	};
+
 	static std::map<std::string, std::function<std::unique_ptr<Particle>()>> gParticleTypes = {
 		{"sand",	[]() { return std::make_unique<Particle_Sand>(); }},
 		{"stone",	[]() { return std::make_unique<Particle_Stone>(); }},
@@ -142,6 +153,7 @@ namespace Core {
 		{"fire",	[]() { return std::make_unique<Particle_Fire>(); }},
 		{"cryo",	[]() { return std::make_unique<Particle_Cryo>(); }},
 		{"ice",		[]() { return std::make_unique<Particle_Ice>(); }},
+		{"lava",	[]() { return std::make_unique<Particle_Lava>(); }},
 	};
 
 	static std::string gParticleStateNames[static_cast<int>(ParticleState::COUNT)] = {
