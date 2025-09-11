@@ -7,6 +7,7 @@ namespace Ui {
 		PLAY,
 		PAUSE,
 		STEP,
+		CLEAR,
 
 		COUNT
 	};

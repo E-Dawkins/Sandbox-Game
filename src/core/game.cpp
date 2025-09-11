@@ -122,10 +122,11 @@ void Core::Game::SetupButtons() {
 	mButtons.emplace_back(std::make_unique<Ui::Button_Simulation>(startX, 10, 50, 50, Ui::SimulationControl::PLAY, [&]() { mIsSimulating = true; }));
 	mButtons.emplace_back(std::make_unique<Ui::Button_Simulation>(startX, 70, 50, 50, Ui::SimulationControl::PAUSE, [&]() { mIsSimulating = false; }));
 	mButtons.emplace_back(std::make_unique<Ui::Button_Simulation>(startX, 130, 50, 50, Ui::SimulationControl::STEP, [&]() { mShouldStep = true; }));
+	mButtons.emplace_back(std::make_unique<Ui::Button_Simulation>(startX, 190, 50, 50, Ui::SimulationControl::CLEAR, [&]() { RemoveAllParticles(); }));
 
 	// Save / load controls
-	mButtons.emplace_back(std::make_unique<Ui::Button_Labeled>(startX, 190, 50, 50, "S", [&]() { SaveCurrentGameState(); }));
-	mButtons.emplace_back(std::make_unique<Ui::Button_Labeled>(startX, 250, 50, 50, "L", [&]() { LoadNewGameState(); }));
+	mButtons.emplace_back(std::make_unique<Ui::Button_Labeled>(startX, 250, 50, 50, "S", [&]() { SaveCurrentGameState(); }));
+	mButtons.emplace_back(std::make_unique<Ui::Button_Labeled>(startX, 310, 50, 50, "L", [&]() { LoadNewGameState(); }));
 }
 
 void Core::Game::ProcessInput() {
@@ -185,6 +186,11 @@ void Core::Game::RemoveParticleFromSystem(int _posX, int _posY) const {
 	}
 }
 
+void Core::Game::RemoveAllParticles() {
+	mParticles.clear();					// remove / delete elements
+	mParticles.shrink_to_fit();			// shrink capacity to '0'
+}
+
 void Core::Game::ReplaceParticleAtPos(int _posX, int _posY, std::string _type) const {
 	RemoveParticleFromSystem(_posX, _posY);
 
@@ -238,9 +244,8 @@ void Core::Game::LoadNewGameState() {
 		// First pause the sim
 		mIsSimulating = false;
 
-		// Clear any current particles
-		mParticles.clear();					// remove / delete elements
-		mParticles.shrink_to_fit();			// shrink capacity to '0'
+		// Clear all current particles
+		RemoveAllParticles();
 
 		// Load in all particles
 		std::string line;

@@ -34,6 +34,7 @@ namespace Core {
 		void ProcessInput();
 		void AddParticleToSystem(int _posX, int _posY, std::string _type) const;
 		void RemoveParticleFromSystem(int _posX, int _posY) const;
+		void RemoveAllParticles();
 
 		void ApplyFuncInRadius(int _r, std::function<void(int, int)> _f);
 

@@ -46,6 +46,13 @@ void Ui::Button_Simulation::Draw() {
 			const float thickness = 5.f;
 			DrawRectangleV({ mFgMax.x - thickness, mFgMin.y }, { thickness, mFgArea.y }, mFgColor);
 		} break;
+
+		case Ui::SimulationControl::CLEAR: {
+			const float thickness = 3.f;
+
+			DrawRectangleLinesEx({ mFgMin.x, mFgMin.y, mFgArea.x, mFgArea.y }, thickness, mFgColor);
+			DrawRectangleV({ mFgMin.x - thickness, mFgMin.y }, { mFgArea.x + thickness * 2, thickness }, mFgColor);
+		} break;
 	}
 }
 
