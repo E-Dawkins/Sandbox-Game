@@ -68,3 +68,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
 
 # Set startup project in Visual Studio to our project
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
+
+# Set working directory for our Visual Studio project
+set_property(TARGET ${PROJECT_NAME} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "$(OutDir)")
