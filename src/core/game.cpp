@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <raylib.h>
+#include <regex>
 
 #include "core/particle_defines.h"
 #include "core/raylib_helpers.h"
@@ -212,7 +213,17 @@ void Core::Game::SaveCurrentGameState() {
 	std::ofstream saveFile("save.txt");
 
 	if (saveFile.is_open()) {
-		saveFile << "TEST SAVE";
+		// First pause the sim
+		mIsSimulating = false;
+
+		std::string line;
+
+		// Then save out all the particle data
+		for (const auto& p : mParticles) {
+			line = std::format("{} {} {}", p->posX, p->posY, Core::GetTypeName(p));
+			saveFile << line << "\n";
+		}
+
 		saveFile.close();
 	}
 	else {
@@ -224,10 +235,31 @@ void Core::Game::LoadNewGameState() {
 	std::ifstream saveFile("save.txt");
 
 	if (saveFile.is_open()) {
-		std::string line;
-		std::getline(saveFile, line);
+		// First pause the sim
+		mIsSimulating = false;
 
-		std::cout << line << "\n";
+		// Clear any current particles
+		mParticles.clear();					// remove / delete elements
+		mParticles.shrink_to_fit();			// shrink capacity to '0'
+
+		// Load in all particles
+		std::string line;
+		while (std::getline(saveFile, line)) {
+			std::regex r("(\\w+) (\\w+) (\\w+)");
+			std::smatch match;
+
+			if (std::regex_match(line, match, r)) {
+				int posX = std::stoi(match[1]);
+				int posY = std::stoi(match[2]);
+
+				AddParticleToSystem(posX, posY, match[3]);
+			}
+			else {
+				std::cout << "Unknown data format when parsing save file!";
+				break;
+			}
+		}
+
 		saveFile.close();
 	}
 	else {

@@ -159,4 +159,17 @@ namespace Core {
 	static std::string gParticleStateNames[static_cast<int>(ParticleState::COUNT)] = {
 		"Solid", "Liquid", "Gas"
 	};
+
+	// Only use this if absolutely necessary, it is not ... the most optimal
+	static inline std::string GetTypeName(const std::unique_ptr<Particle>& _p) {
+		for (const auto& [name, constructor] : gParticleTypes) {
+			auto pInst = constructor();
+
+			if (typeid(*_p) == typeid(*pInst)) {
+				return name;
+			}
+		}
+
+		return "null";
+	}
 }
