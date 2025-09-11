@@ -37,6 +37,9 @@ namespace Core {
 
 		void ApplyFuncInRadius(int _r, std::function<void(int, int)> _f);
 
+		void SaveCurrentGameState();
+		void LoadNewGameState();
+
 	private:
 		// This is mutable to allow 'AddParticleToSystem' and 'RemoveParticleFromSystem' to work on const Game objects
 		// i.e. for particles to call these functions on interaction events

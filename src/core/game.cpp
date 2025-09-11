@@ -1,12 +1,16 @@
 #include "core/game.h"
 
+#include <filesystem>
 #include <format>
+#include <fstream>
+#include <iostream>
 #include <raylib.h>
 
 #include "core/particle_defines.h"
 #include "core/raylib_helpers.h"
 #include "ui/button_category.h"
 #include "ui/button_simulation.h"
+#include "ui/button_labeled.h"
 
 void Core::Game::Init() {
 	InitWindow(800, 600, "Sandbox Game");
@@ -117,6 +121,10 @@ void Core::Game::SetupButtons() {
 	mButtons.emplace_back(std::make_unique<Ui::Button_Simulation>(startX, 10, 50, 50, Ui::SimulationControl::PLAY, [&]() { mIsSimulating = true; }));
 	mButtons.emplace_back(std::make_unique<Ui::Button_Simulation>(startX, 70, 50, 50, Ui::SimulationControl::PAUSE, [&]() { mIsSimulating = false; }));
 	mButtons.emplace_back(std::make_unique<Ui::Button_Simulation>(startX, 130, 50, 50, Ui::SimulationControl::STEP, [&]() { mShouldStep = true; }));
+
+	// Save / load controls
+	mButtons.emplace_back(std::make_unique<Ui::Button_Labeled>(startX, 190, 50, 50, "S", [&]() { SaveCurrentGameState(); }));
+	mButtons.emplace_back(std::make_unique<Ui::Button_Labeled>(startX, 250, 50, 50, "L", [&]() { LoadNewGameState(); }));
 }
 
 void Core::Game::ProcessInput() {
@@ -197,5 +205,32 @@ void Core::Game::ApplyFuncInRadius(int _r, std::function<void(int, int)> _f) {
 				_f(x, y);
 			}
 		}
+	}
+}
+
+void Core::Game::SaveCurrentGameState() {
+	std::ofstream saveFile("save.txt");
+
+	if (saveFile.is_open()) {
+		saveFile << "TEST SAVE";
+		saveFile.close();
+	}
+	else {
+		std::cout << "Could not save to file 'save.txt' !\n";
+	}
+}
+
+void Core::Game::LoadNewGameState() {
+	std::ifstream saveFile("save.txt");
+
+	if (saveFile.is_open()) {
+		std::string line;
+		std::getline(saveFile, line);
+
+		std::cout << line << "\n";
+		saveFile.close();
+	}
+	else {
+		std::cout << "Could not open file 'save.txt' !\n";
 	}
 }
