@@ -2,9 +2,9 @@
 A simple but powerful powder / particle simulation
 
 <p align="center">
-  <img width="600" height="475" alt="Sandbox Game 01" src="https://github.com/user-attachments/assets/7390709d-8254-498f-a1d4-f437ea509c7e" />
-  <img width="600" height="475" alt="Sandbox Game 02" src="https://github.com/user-attachments/assets/2bd5ee4c-ce57-4a16-b54f-ac2021da9d6b" />
-  <img width="600" height="475" alt="Sandbox Game 03" src="https://github.com/user-attachments/assets/e318047d-e5ea-4ddc-ba1d-2d42e37f18c3" />
+  <img width="600" height="475" alt="Screenshot 2025-09-15 162523" src="https://github.com/user-attachments/assets/b1cb7368-86f8-444d-8ada-8f5dcb21ff3d" />
+  <img width="600" height="475" alt="Screenshot 2025-09-15 162604" src="https://github.com/user-attachments/assets/35dab48d-8c88-4b5b-9f59-66e27c14020f" />
+  <img width="600" height="475" alt="Screenshot 2025-09-15 162640" src="https://github.com/user-attachments/assets/e0645eb2-52ce-47f7-b5d3-a741bdc2e593" />
 </p>
 
 ## Current features
