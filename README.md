@@ -20,6 +20,7 @@ A simple but powerful powder / particle simulation
 - Real-time pixel powder simulation
 - Pause and physics step support
 - Re-sizable cursor
+- Save / load game state
 
 ## Controls
 - LMB => place particles / click buttons
