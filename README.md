@@ -31,3 +31,6 @@ A simple but powerful powder / particle simulation
 Open or navigate command prompt to the folder containing 'CMakeLists.txt' and run this command
 
 `cmake -B build`
+
+## Downloadable *.exe
+Alternatively, you can find a downloadable executable on this projects' [itch.io page](https://e-dawkins.itch.io/sandbox-game)
